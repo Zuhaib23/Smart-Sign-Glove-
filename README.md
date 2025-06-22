@@ -72,13 +72,10 @@ python collect_data.py
 
 
 ## 📷 Demo 
-1.
 ![image](https://github.com/user-attachments/assets/07e06436-642c-4cec-b93b-1ffc320ebee3)
 
-2.
-   ![image](https://github.com/user-attachments/assets/3ec2ba3a-0198-4a58-ac19-122d6f22e722)
+![image](https://github.com/user-attachments/assets/3ec2ba3a-0198-4a58-ac19-122d6f22e722)
 
-3.
 ![image](https://github.com/user-attachments/assets/ffdd6796-aef1-497c-8c4b-9812920eea77)
 
 
