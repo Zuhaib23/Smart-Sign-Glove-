@@ -1,19 +1,35 @@
 
-# Smart Sign Glove 🤖🧤
+# 🧤 Smart Sign Glove
 
-The **Smart Sign Glove** is a low-cost wearable system designed to translate hand gestures (sign language) into readable text and voice. It uses **flex sensors** connected to an **Arduino** for gesture data acquisition and performs gesture classification using **K-Nearest Neighbors (KNN)** implemented in **MATLAB**.
+The **Smart Sign Glove** is a low-cost wearable device designed to recognize hand gestures based on finger flexing using flex sensors. It combines **Arduino**, **Python**, and **MATLAB** to train a machine learning model, extract gesture threshold values, and finally embed the logic into Arduino for offline use.
+
+---
+
+## 🧠 System Overview
+
+1. **Data Collection (Python)**  
+   Read real-time flex sensor data from Arduino and save labeled samples.
+
+2. **Training & Threshold Extraction (MATLAB)**  
+   Use KNN to classify gestures and extract **flex value ranges** (thresholds) for each gesture.
+
+3. **Deployment to Arduino**  
+   Hardcode the threshold values for each gesture into Arduino, allowing offline real-time gesture detection without Python or MATLAB.
 
 ---
 
 ## 🔧 Features
 
-- Real-time sign detection using finger-bend (flex) sensors
-- Arduino-based data acquisition over serial
-- MATLAB-based machine learning using the KNN algorithm
-- Converts recognized gestures into text (and optionally into speech)
-- Extendable to full alphabets, digits, or common sign words
+- Collect gesture data using flex sensors and Python
+- Classify gestures using MATLAB's KNN algorithm
+- Automatically generate threshold ranges for each gesture
+- Final Arduino sketch runs independently to recognize gestures in real time
 
 ---
+
+## 📁 Project Structure
+
+
 
 
 
@@ -21,98 +37,113 @@ The **Smart Sign Glove** is a low-cost wearable system designed to translate han
 
 ## 🛠 Hardware Requirements
 
-- Arduino Uno (or any compatible board)
-- 5x Flex sensors (one per finger)
-- Jumper wires, resistors, breadboard
-- USB cable (for Arduino-PC connection)
-- A glove (to mount sensors)
+- Arduino Uno/Nano
+- 5x Flex Sensors (one per finger)
+- Jumper wires, resistors
+- Glove to mount sensors
+- USB cable
 
 ---
 
-## 📡 Software Requirements
+## 💻 Software Requirements
 
-- **Arduino IDE** (for uploading code)
-- **MATLAB** (R2018a or later recommended)
-- Instrument Control Toolbox (for serial communication)
+### Arduino IDE
+- Upload `glove_threshold_classifier.ino` once thresholds are determined
 
----
+### Python 3.x
+Used for collecting labeled gesture data.
 
-## 📥 Data Collection (Using MATLAB)
-
-1. Upload the `glove_sensor.ino` code to your Arduino.
-2. Open `data_collection.m` in MATLAB.
-3. It will:
-   - Connect to the COM port
-   - Read real-time flex sensor values from Arduino
-   - Prompt for a gesture label
-   - Store and save labeled data in `gesture_dataset.mat`
-
-```matlab
-% In MATLAB
-data_collection
+Install dependencies:
+```bash
+pip install pyserial pandas
 ````
 
----
+Run data collection:
 
-## 🧠 KNN Model Training (MATLAB)
-
-Once data is collected:
-
-```matlab
-knn_train
+```bash
+python collect_data.py
 ```
 
-* Trains a KNN model on the recorded gestures
-* Saves the trained model for prediction
+### MATLAB
+
+Used to train KNN model and extract gesture thresholds.
+
+Run:
+
+```matlab
+knn_train_and_extract_thresholds
+```
+
+This will:
+
+* Load `gesture_data.csv`
+* Train a KNN model
+* Analyze data to extract min/max ranges per gesture
+* Export threshold ranges to `gesture_thresholds.txt` (used in Arduino code)
 
 ---
 
-## ⚡ Real-Time Prediction
+## 📈 Threshold Format
 
-To test the glove in real-time using the trained model:
+Example output from MATLAB (used in Arduino):
 
-```matlab
-knn_predict
+```txt
+Gesture: Hello
+Thumb: [35 - 50]
+Index: [25 - 40]
+Middle: [30 - 45]
+Ring: [20 - 35]
+Pinky: [25 - 40]
 ```
 
-This script:
+These ranges are inserted into `glove_threshold_classifier.ino` like this:
 
-* Reads live sensor values from Arduino
-* Predicts gesture label using trained KNN model
-* Displays the result in the MATLAB console
+```cpp
+if (thumbVal >= 35 && thumbVal <= 50 &&
+    indexVal >= 25 && indexVal <= 40 &&
+    middleVal >= 30 && middleVal <= 45) {
+    Serial.println("Hello");
+}
+```
 
 ---
 
 ## 📷 Demo 
+1.
+![image](https://github.com/user-attachments/assets/07e06436-642c-4cec-b93b-1ffc320ebee3)
 
-![image](https://github.com/user-attachments/assets/bf947644-3764-4455-88d7-81026f61c110)
+2.
+   ![image](https://github.com/user-attachments/assets/3ec2ba3a-0198-4a58-ac19-122d6f22e722)
 
-![image](https://github.com/user-attachments/assets/308e0e32-0168-44f0-a26f-0a54f6f7d5c7)
-
-![image](https://github.com/user-attachments/assets/ea55bdd6-37ce-466c-93d6-470bafe4b6db)
-
-
-## Final Product
-![image](https://github.com/user-attachments/assets/71c9890e-6e51-4b81-84a7-b7326e96a7b9)
+3.
+![image](https://github.com/user-attachments/assets/ffdd6796-aef1-497c-8c4b-9812920eea77)
 
 
+## Final product 
+![image](https://github.com/user-attachments/assets/72c19680-93cc-4f07-843f-1d23861cd56d)
 
+
+> 
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more information.
+This project is licensed under the MIT License.
 
 ---
 
 ## 🙌 Contributions
 
-Want to help improve this project? Feel free to fork, submit pull requests, or open issues.
+You can contribute by:
+
+* Adding more gestures and their threshold logic
+* Improving data smoothing and filtering
+* Making the threshold extraction dynamic or adaptive
 
 ---
 
-### 📬 Contact
+## 📬 Contact
 
 * GitHub: https://github.com/Zuhaib23
 * Email: zohaibrajput0311@gmail.com
