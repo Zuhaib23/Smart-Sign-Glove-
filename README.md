@@ -64,49 +64,12 @@ Run data collection:
 python collect_data.py
 ```
 
-### MATLAB
-
-Used to train KNN model and extract gesture thresholds.
-
-Run:
-
-```matlab
-knn_train_and_extract_thresholds
-```
-
-This will:
-
-* Load `gesture_data.csv`
-* Train a KNN model
-* Analyze data to extract min/max ranges per gesture
-* Export threshold ranges to `gesture_thresholds.txt` (used in Arduino code)
 
 ---
 
-## 📈 Threshold Format
 
-Example output from MATLAB (used in Arduino):
 
-```txt
-Gesture: Hello
-Thumb: [35 - 50]
-Index: [25 - 40]
-Middle: [30 - 45]
-Ring: [20 - 35]
-Pinky: [25 - 40]
-```
 
-These ranges are inserted into `glove_threshold_classifier.ino` like this:
-
-```cpp
-if (thumbVal >= 35 && thumbVal <= 50 &&
-    indexVal >= 25 && indexVal <= 40 &&
-    middleVal >= 30 && middleVal <= 45) {
-    Serial.println("Hello");
-}
-```
-
----
 
 ## 📷 Demo 
 1.
