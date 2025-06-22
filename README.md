@@ -27,9 +27,6 @@ The **Smart Sign Glove** is a low-cost wearable device designed to recognize han
 
 ---
 
-## 📁 Project Structure
-
-
 
 
 
@@ -61,7 +58,7 @@ pip install pyserial pandas
 Run data collection:
 
 ```bash
-python collect_data.py
+python PythonCodefor_Collecting Data.py
 ```
 
 
